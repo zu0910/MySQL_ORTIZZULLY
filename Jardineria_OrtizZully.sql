@@ -965,5 +965,35 @@ SELECT DISTINCT forma_pago FROM pago;
 SELECT * FROM producto WHERE gama = 'Ornamentales' AND unidades_stock > 100 ORDER BY precio_venta DESC;
 
 -- Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 o 30.
-SELECT * FROM cliente WHERE ciudad = 'Madrid' AND (codigo_empleado_rep_ventas = 11 OR codigo_empleado_rep_ventas = 30);
+SELECT nombre_cliente, codigo_cliente, codigo_empleado_rep_ventas FROM cliente WHERE ciudad ='Madrid' and codigo_empleado_rep_ventas in (11,30);
+
+-- Consultas multitabla (Composición interna) (OPCIONAL)
+-- Resuelva todas las consultas mediante INNER JOIN y NATURAL JOIN.
+
+--  Obtén un listado con el nombre de cada cliente y el nombre y apellido de su representante de ventas.
+select nombre_cliente, nombre_contacto, apellido_contacto FROM cliente c inner join empleado e on c.codigo_empleado_rep_ventas=e.codigo_empleado;
+
+--  Muestra el nombre de los clientes que hayan realizado pagos junto con el nombre de sus representantes de ventas.
+select nombre_cliente, nombre from pago p inner join cliente c on p.codigo_cliente=c.codigo_cliente inner join empleado e on c.codigo_empleado_rep_ventas=e.codigo_empleado;
+
+-- Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+select c.nombre_cliente, e.nombre, e.apellido1, ofi.ciudad as ciudad_oficina from pago p inner join cliente c on p.codigo_cliente=c.codigo_cliente inner join empleado e on c.codigo_empleado_rep_ventas=e.codigo_empleado inner join oficina ofi on e.codigo_oficina = ofi.codigo_oficina;
+
+-- Lista la dirección de las oficinas que tengan clientes en Fuenlabrada.
+select c.nombre_cliente, e.nombre, e.apellido1,e.apellido2, ofi.ciudad as ciudad_oficina from cliente c inner join empleado e on c.codigo_empleado_rep_ventas=e.codigo_empleado inner join oficina ofi on e.codigo_oficina=ofi.codigo_oficina where c.ciudad='Fuenlabrada';
+
+-- Devuelve el nombre de los clientes y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+select c.nombre_cliente, e.nombre, e.apellido1, e.apellido2, ofi.ciudad as ciudad_oficina from cliente c inner join empleado e on c.codigo_empleado_rep_ventas=e.codigo_empleado inner join oficina ofi on e.codigo_oficina=ofi.codigo_oficina;
+
+-- Devuelve un listado de las diferentes gamas de producto que ha comprado cada cliente.
+select nombre_cliente, gama from cliente natural join gama_producto;
+
+-- Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido.
+select nombre_cliente, fecha_esperada, fecha_entrega from cliente c inner join pedido p on c.codigo_cliente=p.codigo_cliente where fecha_esperada > fecha_entrega;
+
+-- Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes.
+select e.nombre as nombre_empleado, j.nombre as nombre_jefe from empleado j inner join empleado e on j.codigo_empleado=e.codigo_jefe;
+
+-- Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe
+
 
