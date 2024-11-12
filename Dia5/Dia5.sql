@@ -23,7 +23,11 @@ select * from asignatura where id_profesor is NULL;
 
 -- 6. Devuelve un listado con todos los departamentos que no han impartido asignaturas en ningún curso escolar.
 
-
+SELECT departamento.nombre, asignatura.nombre FROM departamento
+ LEFT JOIN profesor ON departamento.id = profesor.id_departamento
+INNER JOIN asignatura ON profesor.id = asignatura.id_profesor 
+LEFT JOIN alumno_se_matricula_asignatura asma ON asignatura.id = asma.id_asignatura
+LEFT JOIN curso_escolar ON asma.id_curso_escolar != curso_escolar.id;
 
 
 -- 7. Devuelve un listado con el nombre de todos los departamentos que tienen profesores que imparten alguna asignatura en el Grado en Ingeniería Informática (Plan 2015).
@@ -43,3 +47,6 @@ inner join departamento depar on profe.id_departamento = depar.id order by nombr
 -- 9. Devuelve un listado con todos los departamentos que tienen alguna asignatura que no se haya impartido en ningún curso escolar.
 -- resultado debe mostrar el nombre del departamento y el nombre de la asignatura que no se haya impartido nunca.
 
+SELECT  departamento.nombre, asignatura.nombre FROM departamento LEFT JOIN profesor ON departamento.id = profesor.id_departamento
+INNER JOIN asignatura ON profesor.id = asignatura.id_profesor LEFT JOIN alumno_se_matricula_asignatura asma ON asignatura.id = asma.id_asignatura
+LEFT JOIN curso_escolar ON asma.id_curso_escolar != curso_escolar.id;
