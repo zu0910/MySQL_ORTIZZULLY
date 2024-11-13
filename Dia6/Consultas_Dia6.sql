@@ -251,12 +251,15 @@ select * from departamento depar left join empleado emp on emp.id_departamento =
 -- ningún empleado asociado. Ordene el listado alfabéticamente por el
 -- nombre del departamento.
 
-
+select * from empleado emp right join departamento depar on emp.id_departamento = depar.id 
+union select * from empleado emp left join departamento depar on emp.id_departamento = depar.id;
 
 -- 5. Devuelve un listado con los empleados que no tienen ningún departamento
 -- asociado y los departamentos que no tienen ningún empleado asociado.
 -- Ordene el listado alfabéticamente por el nombre del departamento.
 
+select * from empleado emp right join departamento depar on emp.id_departamento = depar.id where emp.id_departamento is null 
+union select * from empleado emp left join departamento depar on emp.id_departamento = depar.id where emp.id_departamento is null;
 
 -- Consultas resumen
 
