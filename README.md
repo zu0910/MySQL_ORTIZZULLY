@@ -287,7 +287,7 @@ En este repositorio consta de las evidencias de aprendiaje de dia a dia de MySQL
         LEFT JOIN curso_escolar ON asma.id_curso_escolar != curso_escolar.id;
     ```
 
-* **Dia5** :
+* **Dia6** :
 
     - Contiene dos carpetas:
 
