@@ -2,94 +2,90 @@ create database AutoRenta_OrtizZully;
 -- drop database AutoRenta_OrtizZully;
 use AutoRenta_OrtizZully;
 
-CREATE TABLE sucursales (
+
+CREATE TABLE Sucursales (
   id_sucursal INT PRIMARY KEY,
-  ubicacion VARCHAR(255),
+  ubicacion varchar(50),
+  direccion VARCHAR(50) ,
   ciudad VARCHAR(50) ,
-  dirección VARCHAR(50) ,
   telefono_fijo VARCHAR(50) ,
   celular VARCHAR(50) ,
   correo_electronico VARCHAR(255)
 );
 
-CREATE TABLE tipo_vehiculo(
-	id_tipo_vehiculo INT PRIMARY KEY,
-    tipo VARCHAR(250) ,
-    valor_alquiler_dia DOUBLE,
-    valor_alquiler_semana DOUBLE 
+CREATE TABLE Empleados (
+id_empleado INT PRIMARY KEY,
+cedula VARCHAR(50),
+nombre1 VARCHAR(60),
+nombre2 VARCHAR(60),
+apellido1 VARCHAR(60),
+apellido2 VARCHAR(60),
+direccion VARCHAR(50),
+ciudad VARCHAR(50),
+celular VARCHAR(50),
+correo_electronico VARCHAR(50),
+id_sucursal INT,
+FOREIGN KEY (id_sucursal) REFERENCES Sucursales(id_sucursal)
 );
 
-
-CREATE TABLE vehiculos (
-  id_vehiculo INT PRIMARY KEY,
-  id_tipo_vehiculo INT,
-  id_sucursal INT,
-  placa VARCHAR(50) ,
-  referencia VARCHAR(255),
-  modelo VARCHAR(255),
-  puertas int,
-  capacidad int,
-  sunroof BOOLEAN,
-  motor VARCHAR(255),
-  color VARCHAR(255),
-  foreign key (id_tipo_vehiculo) references tipo_vehiculo(id_tipo_vehiculo),
-  foreign key (id_sucursal) references sucursales(id_sucursal)
+CREATE TABLE Clientes (
+id_cliente INT PRIMARY KEY,
+cedula VARCHAR(50),
+nombre1 VARCHAR(60),
+nombre2 VARCHAR(60),
+apellido1 VARCHAR(60),
+apellido2 VARCHAR(60),
+direccion VARCHAR(50),
+ciudad VARCHAR(50),
+celular VARCHAR(20),
+correo_electronico VARCHAR(50)
 );
 
-CREATE TABLE descuento (
- id_descuento INT PRIMARY KEY,
- id_tipo_vehiculo INT ,
- fecha_inicio DATE,
- fecha_fin DATE,
- porcentaje_descuento DOUBLE,
- foreign key (id_tipo_vehiculo) references tipo_vehiculo(id_tipo_vehiculo) 
- 
+CREATE TABLE Tipo_vehiculo (
+	id_tipoV INT PRIMARY KEY,
+    valor_alquiler_semana INT,
+    valor_alquiler_dia INT,
+    tipo VARCHAR(55)
 );
 
-CREATE TABLE clientes (
-  id_cliente INT PRIMARY KEY,
-  cedula VARCHAR(50) ,
-  nombre1 VARCHAR(255) ,
-  nombre2 VARCHAR(255) ,
-  apellido1 VARCHAR(255) ,
-  apellido2 VARCHAR(255) ,
-  ubicacion VARCHAR(255),
-  ciudad VARCHAR(50) ,
-  celular VARCHAR(50) ,
-  correo_electronico VARCHAR(255)
+CREATE TABLE Vehiculos (
+id_vehiculo INT PRIMARY KEY,
+placa VARCHAR(50),
+referencia INT,
+modelo VARCHAR(50),
+puertas INT,
+capacidad INT,
+sunroof VARCHAR(30),
+motor VARCHAR(50),
+color VARCHAR(40),
+id_tipoV INT,
+FOREIGN KEY (id_tipoV) REFERENCES Tipo_vehiculo(id_tipoV)
 );
 
-CREATE TABLE empleados (
-  id_empleado INT PRIMARY KEY,
-  Id_sucursal INT ,
-  cedula VARCHAR(50) ,
-  nombre1 VARCHAR(255) ,
-  nombre2 VARCHAR(255) ,
-  apellido1 VARCHAR(255) ,
-  apellido2 VARCHAR(255) ,
-  ubicacion VARCHAR(255),
-  ciudad VARCHAR(50) ,
-  celular VARCHAR(50) ,
-  correo_electronico VARCHAR(255) ,
-  foreign key (id_sucursal) references sucursales(id_sucursal)
+CREATE TABLE Alquileres (
+id_alquiler INT PRIMARY KEY,
+fecha_salida DATE,
+fecha_llegada VARCHAR(55) NULL,
+fecha_esperada DATE,
+valor_cotizado INT,
+valor_pagado INT,
+id_vehiculo INT,
+id_cliente INT,
+id_empleado INT,
+id_sucursal INT,
+FOREIGN KEY (id_vehiculo) REFERENCES Vehiculos(id_vehiculo),
+FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+FOREIGN KEY (id_empleado) REFERENCES Empleados(id_empleado),
+FOREIGN KEY (id_sucursal) REFERENCES Sucursales(id_sucursal)
 );
 
-CREATE TABLE alquileres (
-  id_alquiler INT PRIMARY KEY,
-  id_vehiculo INT ,
-  id_empleado INT ,
-  id_sucursal INT ,
-  id_cliente INT,
-  fecha_salida  DATE ,
-  fecha_esperada_entrega DATE,
-  fecha_entrega  DATE ,
-  valor_cotizado DECIMAL(10, 2) ,
-  valor_pagado DECIMAL(10, 2),
-   foreign key (id_vehiculo) references vehiculos(id_vehiculo),
-   foreign key (id_empleado) references empleados(id_empleado),
-   foreign key (id_sucursal) references sucursales(id_sucursal),
-   foreign key (id_sucursal) references sucursales(id_sucursal)
+CREATE TABLE Descuentos (
+	id_descuento INT PRIMARY KEY,
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    porcentaje_descuento INT,
+    id_tipoV INT,
+    FOREIGN KEY (id_tipoV) REFERENCES Tipo_vehiculo(id_tipoV)
 );
-
 
 
